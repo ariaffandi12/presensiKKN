@@ -2,13 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getAuthSession } from '@/lib/auth';
 import { broadcastEvent } from '@/lib/realtime-bus';
+import { getTodayWIB } from '@/lib/utils';
 
-function getTodayStr(): string {
-  const now = new Date();
-  const y = now.getFullYear();
-  const m = String(now.getMonth() + 1).padStart(2, '0');
-  const d = String(now.getDate()).padStart(2, '0');
-  return `${y}-${m}-${d}`;
+// Helper: build a WIB-aware deadline Date from "HH:mm" string
+function buildDeadlineWIB(closingTime: string): Date | null {
+  if (!closingTime) return null;
+  const [h, m] = closingTime.split(':').map(Number);
+  const today = getTodayWIB(); // "YYYY-MM-DD" in WIB
+  // Build ISO string with +07:00 offset so JS stores it correctly as UTC
+  return new Date(`${today}T${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:00+07:00`);
 }
 
 export async function GET() {
@@ -38,18 +40,12 @@ export async function POST(request: NextRequest) {
     },
   });
 
-  // Calculate deadline if closingTime is provided
-  let deadlineDate: Date | null = null;
-  if (closingTime) {
-    const [h, m] = closingTime.split(':').map(Number);
-    const targetDate = new Date();
-    targetDate.setHours(h, m, 0, 0);
-    deadlineDate = targetDate;
-  }
+  // Calculate deadline in WIB if closingTime is provided
+  const deadlineDate = closingTime ? buildDeadlineWIB(closingTime) : null;
 
   // Auto-open session in settings
   let setting = await prisma.setting.findFirst();
-  const today = getTodayStr();
+  const today = getTodayWIB();
 
   if (setting) {
     setting = await prisma.setting.update({
@@ -106,18 +102,11 @@ export async function PUT(request: NextRequest) {
 
   // If title was activated, ensure overall setting is OPEN and set deadline if closingTime exists
   if (isActive === true) {
-    let deadlineDate: Date | null = null;
     const finalClosingTime = updatedTitle.closingTime || closingTime;
-
-    if (finalClosingTime) {
-      const [h, m] = finalClosingTime.split(':').map(Number);
-      const targetDate = new Date();
-      targetDate.setHours(h, m, 0, 0);
-      deadlineDate = targetDate;
-    }
+    const deadlineDate = finalClosingTime ? buildDeadlineWIB(finalClosingTime) : null;
 
     let setting = await prisma.setting.findFirst();
-    const today = getTodayStr();
+    const today = getTodayWIB();
 
     if (setting) {
       setting = await prisma.setting.update({
