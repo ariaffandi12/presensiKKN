@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 Int                  @id @default(autoincrement())
+  username           String               @unique
+  password           String
+  role               String               @default("USER") // ADMIN | USER
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  attendances        Attendance[]
+  attendanceHistories AttendanceHistory[]
+}
+
+model AttendanceTitle {
+  id          Int          @id @default(autoincrement())
+  title       String
+  isActive    Boolean      @default(false)
+  closingTime String?      // jam tutup e.g. "21:00"
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  attendances Attendance[]
+}
+
+model Attendance {
+  id          Int             @id @default(autoincrement())
+  userId      Int
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  titleId     Int
+  title       AttendanceTitle @relation(fields: [titleId], references: [id], onDelete: Cascade)
+  photo       String
+  description String
+  date        String
+  time        String
+  status      String          @default("Hadir")
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+// Riwayat absensi — data yang sudah di-reset saat 00.00
+model AttendanceHistory {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  titleName   String   // nama judul saat absensi (snapshot)
+  photo       String
+  description String
+  date        String   // tanggal absensi asli
+  time        String   // jam absensi asli
+  status      String   @default("Hadir") // Hadir | Tidak Hadir
+  archivedAt  DateTime @default(now())   // kapan di-archive
+}
+
+model Setting {
+  id               Int       @id @default(autoincrement())
+  attendanceStatus String    @default("CLOSE") // OPEN | CLOSE
+  durationMinutes  Int?      // null = no limit
+  deadline         DateTime? // auto-close at this time
+  activeDate       String?   // tanggal aktif format "YYYY-MM-DD" untuk deteksi hari baru
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
