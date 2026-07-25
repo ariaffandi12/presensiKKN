@@ -4,17 +4,6 @@ import { getAuthSession } from '@/lib/auth';
 import { broadcastEvent } from '@/lib/realtime-bus';
 import { getTodayWIB, formatIndonesianDate, getNowWIB } from '@/lib/utils';
 
-
-// ─── Helper: Indonesian date/time strings ────────────────────────────────────
-function formatIndonesianDateLocal(date: Date): string {
-  const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-  const months = [
-    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember',
-  ];
-  return formatIndonesianDate(date);
-}
-
 // markAbsentUsers removed: when session closes, users who haven't attended
 // simply remain as 'Belum Hadir'. No auto 'Tidak Hadir' records are created.
 
@@ -117,7 +106,7 @@ async function performMidnightReset(settingId: number) {
   // 6. Broadcast realtime event
   broadcastEvent('midnight_reset', {
     message: 'Data presensi telah direset untuk hari baru.',
-    date: getTodayStr(),
+    date: getTodayWIB(),
   });
 
   console.log('[PresensiKu] Midnight reset complete.');
@@ -128,7 +117,7 @@ export async function GET() {
   let setting = await prisma.setting.findFirst();
   if (!setting) {
     setting = await prisma.setting.create({
-      data: { attendanceStatus: 'CLOSE', activeDate: getTodayStr() },
+      data: { attendanceStatus: 'CLOSE', activeDate: getTodayWIB() },
     });
   }
 
