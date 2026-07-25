@@ -2,31 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getAuthSession } from '@/lib/auth';
 import { broadcastEvent } from '@/lib/realtime-bus';
+import { getTodayWIB, formatIndonesianDate, getNowWIB } from '@/lib/utils';
 
-// ─── Helper: format local date as "YYYY-MM-DD" ───────────────────────────────
-function getTodayStr(): string {
-  const now = new Date();
-  const y = now.getFullYear();
-  const m = String(now.getMonth() + 1).padStart(2, '0');
-  const d = String(now.getDate()).padStart(2, '0');
-  return `${y}-${m}-${d}`;
-}
 
 // ─── Helper: Indonesian date/time strings ────────────────────────────────────
-function formatIndonesianDate(date: Date): string {
+function formatIndonesianDateLocal(date: Date): string {
   const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
   const months = [
     'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
     'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember',
   ];
-  return `${days[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
-}
-
-function formatIndonesianTime(date: Date): string {
-  const h = String(date.getHours()).padStart(2, '0');
-  const m = String(date.getMinutes()).padStart(2, '0');
-  const s = String(date.getSeconds()).padStart(2, '0');
-  return `${h}:${m}:${s} WIB`;
+  return formatIndonesianDate(date);
 }
 
 // markAbsentUsers removed: when session closes, users who haven't attended
@@ -81,8 +67,8 @@ async function performMidnightReset(settingId: number) {
     
     // Wait, settingId is passed. Let's get setting to know its activeDate.
     const setting = await prisma.setting.findUnique({ where: { id: settingId } });
-    const activeDateObj = setting?.activeDate ? new Date(setting.activeDate) : now;
-    const historyDateStr = formatIndonesianDate(activeDateObj);
+    const activeDateObj = setting?.activeDate ? new Date(setting.activeDate + 'T00:00:00+07:00') : getNowWIB();
+    const historyDateStr = formatIndonesianDateLocal(activeDateObj);
     const historyTimeStr = '-'; // Tidak Hadir doesn't have a time
 
     const missingRecords = [];
@@ -124,7 +110,7 @@ async function performMidnightReset(settingId: number) {
       attendanceStatus: 'CLOSE',
       durationMinutes: null,
       deadline: null,
-      activeDate: getTodayStr(),
+      activeDate: getTodayWIB(),
     },
   });
 
@@ -146,7 +132,7 @@ export async function GET() {
     });
   }
 
-  const today = getTodayStr();
+  const today = getTodayWIB();
 
   // ── Lazy midnight reset: detect if date has changed ──
   if (setting.activeDate && setting.activeDate !== today) {
@@ -158,7 +144,7 @@ export async function GET() {
     // First time: set activeDate
     setting = await prisma.setting.update({
       where: { id: setting.id },
-      data: { activeDate: today },
+      data: { activeDate: getTodayWIB() },
     });
   }
 
@@ -201,12 +187,15 @@ export async function POST(request: NextRequest) {
   let deadline: Date | null = null;
   if (attendanceStatus === 'OPEN') {
     if (targetTime) {
-      // Format "HH:mm" (misal: "21:00" atau "17:30")
+      // Format "HH:mm" (misal: "07:30") — this is WIB time
+      // We need to store it as UTC in the database
       const [h, m] = targetTime.split(':').map(Number);
-      const targetDate = new Date();
-      targetDate.setHours(h, m, 0, 0);
-      // Jika jam target hari ini sudah lewat, bisa set kebesokan atau tetapkan
-      deadline = targetDate;
+      // Build the target date in WIB by using today's WIB date
+      const todayWIB = getTodayWIB(); // "YYYY-MM-DD"
+      // Create a UTC Date that represents the WIB target time
+      // WIB = UTC+7, so subtract 7 hours to get UTC
+      const deadlineUTC = new Date(`${todayWIB}T${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:00+07:00`);
+      deadline = deadlineUTC;
     } else if (deadlineIso) {
       deadline = new Date(deadlineIso);
     } else if (durationMinutes && durationMinutes > 0) {
@@ -215,7 +204,7 @@ export async function POST(request: NextRequest) {
   }
 
   let setting = await prisma.setting.findFirst();
-  const today = getTodayStr();
+  const today = getTodayWIB();
 
   if (setting) {
     setting = await prisma.setting.update({
