@@ -51,7 +51,8 @@ export async function GET(request: NextRequest) {
   const currentHHMM = formatIndonesianTime(now).slice(0, 5);
 
   const setting = await prisma.setting.findFirst();
-  const isGlobalClosed = setting?.attendanceStatus === 'CLOSE' || (setting?.deadline && now > new Date(setting.deadline));
+  const isGlobalClosed = setting?.attendanceStatus === 'CLOSE';
+  const isDeadlinePassed = setting?.deadline ? now > new Date(setting.deadline) : false;
 
   // Build 17 registered users monitoring structure (Grouped by User -> Date -> Title)
   const usersMonitoring = allUsers.map((userItem) => {
@@ -73,7 +74,7 @@ export async function GET(request: NextRequest) {
         const hasRecord = mappedItems.some((item) => item.titleId === titleItem.id);
         if (!hasRecord) {
           const isTimePassed = titleItem.closingTime && currentHHMM >= titleItem.closingTime;
-          const dynamicStatus = (isGlobalClosed || isTimePassed) ? 'Tidak Hadir' : 'Belum Hadir';
+          const dynamicStatus = (isDeadlinePassed || isTimePassed) ? 'Tidak Hadir' : 'Belum Hadir';
 
           mappedItems.push({
             attendanceId: null,
@@ -131,7 +132,7 @@ export async function GET(request: NextRequest) {
           (a) => a.userId === userItem.id && a.titleId === titleItem.id
         );
         const isTimePassed = titleItem.closingTime && currentHHMM >= titleItem.closingTime;
-        const dynamicStatus = (isGlobalClosed || isTimePassed) ? 'Tidak Hadir' : 'Belum Hadir';
+        const dynamicStatus = (isDeadlinePassed || isTimePassed) ? 'Tidak Hadir' : 'Belum Hadir';
 
         monitoringList.push({
           userId: userItem.id,

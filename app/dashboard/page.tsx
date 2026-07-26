@@ -204,7 +204,8 @@ export default function UserDashboardPage() {
                       const isHadir = record && record.status === 'Hadir';
                     // @ts-ignore - t has closingTime from API
                     const isTimePassed = t.closingTime && currentHHMM >= t.closingTime;
-                    const isTidakHadir = (!record && (!isAttendanceOpen || isTimePassed));
+                    const isDeadlinePassed = deadline ? new Date() > new Date(deadline) : false;
+                    const isTidakHadir = !record && (isTimePassed || isDeadlinePassed);
 
                     return (
                       <div
