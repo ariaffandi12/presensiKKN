@@ -92,3 +92,17 @@ export async function GET() {
     });
   }
 }
+
+export async function DELETE(request: Request) {
+  const session = await getAuthSession();
+  if (!session || session.role !== 'ADMIN') {
+    return NextResponse.json({ message: 'Tidak terotentikasi atau akses ditolak.' }, { status: 401 });
+  }
+
+  await prisma.attendanceHistory.deleteMany({});
+  
+  return NextResponse.json({
+    success: true,
+    message: 'Semua riwayat berhasil dihapus.'
+  });
+}

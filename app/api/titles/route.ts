@@ -2,16 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getAuthSession } from '@/lib/auth';
 import { broadcastEvent } from '@/lib/realtime-bus';
-import { getTodayWIB } from '@/lib/utils';
-
-// Helper: build a WIB-aware deadline Date from "HH:mm" string
-function buildDeadlineWIB(closingTime: string): Date | null {
-  if (!closingTime) return null;
-  const [h, m] = closingTime.split(':').map(Number);
-  const today = getTodayWIB(); // "YYYY-MM-DD" in WIB
-  // Build ISO string with +07:00 offset so JS stores it correctly as UTC
-  return new Date(`${today}T${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:00+07:00`);
-}
+import { getTodayWIBStr, parseWIBTargetTime } from '@/lib/utils';
 
 export async function GET() {
   const titles = await prisma.attendanceTitle.findMany({
@@ -40,12 +31,15 @@ export async function POST(request: NextRequest) {
     },
   });
 
-  // Calculate deadline in WIB if closingTime is provided
-  const deadlineDate = closingTime ? buildDeadlineWIB(closingTime) : null;
+  // Calculate deadline if closingTime is provided
+  let deadlineDate: Date | null = null;
+  if (closingTime) {
+    deadlineDate = parseWIBTargetTime(closingTime);
+  }
 
   // Auto-open session in settings
   let setting = await prisma.setting.findFirst();
-  const today = getTodayWIB();
+  const today = getTodayWIBStr();
 
   if (setting) {
     setting = await prisma.setting.update({
@@ -102,11 +96,15 @@ export async function PUT(request: NextRequest) {
 
   // If title was activated, ensure overall setting is OPEN and set deadline if closingTime exists
   if (isActive === true) {
+    let deadlineDate: Date | null = null;
     const finalClosingTime = updatedTitle.closingTime || closingTime;
-    const deadlineDate = finalClosingTime ? buildDeadlineWIB(finalClosingTime) : null;
+
+    if (finalClosingTime) {
+      deadlineDate = parseWIBTargetTime(finalClosingTime);
+    }
 
     let setting = await prisma.setting.findFirst();
-    const today = getTodayWIB();
+    const today = getTodayWIBStr();
 
     if (setting) {
       setting = await prisma.setting.update({

@@ -44,7 +44,12 @@ export default function UserDashboardPage() {
       setUser(meData.user);
 
       const settingRes = await fetch('/api/settings');
-      const settingData = await settingRes.json();
+      let settingData: any = {};
+      try {
+        settingData = await settingRes.json();
+      } catch (e) {
+        console.error('Failed to parse settings JSON', e);
+      }
       const status = settingData.attendanceStatus || 'CLOSE';
       setAttendanceStatus(status);
       setDeadline(settingData.deadline || null);
@@ -57,7 +62,12 @@ export default function UserDashboardPage() {
       }
 
       const attRes = await fetch('/api/attendance');
-      const attData = await attRes.json();
+      let attData: any = {};
+      try {
+        attData = await attRes.json();
+      } catch (e) {
+        console.error('Failed to parse attendance JSON', e);
+      }
       setActiveTitles(attData.activeTitles || (attData.activeTitle ? [attData.activeTitle] : []));
 
       if (meData.user) {

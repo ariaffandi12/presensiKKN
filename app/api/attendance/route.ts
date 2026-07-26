@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getAuthSession } from '@/lib/auth';
 import { broadcastEvent } from '@/lib/realtime-bus';
-import { formatIndonesianDate, formatIndonesianTime, getCurrentHHMMWIB, getNowWIB } from '@/lib/utils';
+import { formatIndonesianDate, formatIndonesianTime } from '@/lib/utils';
 import fs from 'fs';
 import path from 'path';
 
@@ -46,12 +46,12 @@ export async function GET(request: NextRequest) {
     (a) => a.status === 'Hadir' && a.photo && a.photo.trim() !== ''
   );
 
-  const now = getNowWIB();
+  const now = new Date();
   const todayDateStr = formatIndonesianDate(now);
-  const currentHHMM = getCurrentHHMMWIB();
+  const currentHHMM = formatIndonesianTime(now).slice(0, 5);
 
   const setting = await prisma.setting.findFirst();
-  const isGlobalClosed = setting?.attendanceStatus === 'CLOSE' || (setting?.deadline && new Date() > new Date(setting.deadline));
+  const isGlobalClosed = setting?.attendanceStatus === 'CLOSE' || (setting?.deadline && now > new Date(setting.deadline));
 
   // Build 17 registered users monitoring structure (Grouped by User -> Date -> Title)
   const usersMonitoring = allUsers.map((userItem) => {
@@ -216,9 +216,9 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // Check if title has passed closingTime (always compare in WIB)
-  const now = getNowWIB();
-  const currentHHMM = getCurrentHHMMWIB();
+  // Check if title has passed closingTime
+  const now = new Date();
+  const currentHHMM = formatIndonesianTime(now).slice(0, 5);
   if (targetTitle.closingTime && currentHHMM >= targetTitle.closingTime) {
     return NextResponse.json(
       { message: `Waktu presensi untuk judul "${targetTitle.title}" telah berakhir pada ${targetTitle.closingTime} WIB.` },

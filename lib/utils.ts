@@ -5,52 +5,66 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// WIB = UTC+7. This always returns the correct WIB time regardless of server timezone.
-export function getNowWIB(): Date {
-  const now = new Date();
-  // Offset in ms: WIB is UTC+7
-  const WIB_OFFSET_MS = 7 * 60 * 60 * 1000;
-  return new Date(now.getTime() + WIB_OFFSET_MS);
+// ─── WIB (Asia/Jakarta - UTC+7) Helpers ─────────────────────────────────────
+
+export function getWIBDateParts(date: Date = new Date()) {
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Jakarta',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  });
+
+  const parts = formatter.formatToParts(date);
+  const map: Record<string, string> = {};
+  parts.forEach((p) => {
+    map[p.type] = p.value;
+  });
+
+  const hour = (map.hour === '24' || map.hour === '00') ? '00' : map.hour;
+
+  return {
+    year: map.year,
+    month: map.month,
+    day: map.day,
+    hour: hour,
+    minute: map.minute,
+    second: map.second,
+  };
 }
 
-export function formatIndonesianDate(date: Date = getNowWIB()): string {
-  const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-  const months = [
-    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-  ];
-
-  // Use UTC methods on the WIB-shifted date to get correct values
-  const dayName = days[date.getUTCDay()];
-  const dayNum = date.getUTCDate();
-  const monthName = months[date.getUTCMonth()];
-  const year = date.getUTCFullYear();
-
-  return `${dayName}, ${dayNum} ${monthName} ${year}`;
+export function getTodayWIBStr(date: Date = new Date()): string {
+  const { year, month, day } = getWIBDateParts(date);
+  return `${year}-${month}-${day}`;
 }
 
-export function formatIndonesianTime(date: Date = getNowWIB()): string {
-  // Use UTC methods on the WIB-shifted date
-  const hours = String(date.getUTCHours()).padStart(2, '0');
-  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
-  const seconds = String(date.getUTCSeconds()).padStart(2, '0');
-
-  return `${hours}:${minutes}:${seconds} WIB`;
+export function formatIndonesianDate(date: Date = new Date()): string {
+  return new Intl.DateTimeFormat('id-ID', {
+    timeZone: 'Asia/Jakarta',
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }).format(date);
 }
 
-// Returns current WIB time as "HH:mm" string for closingTime comparison
-export function getCurrentHHMMWIB(): string {
-  const wib = getNowWIB();
-  const h = String(wib.getUTCHours()).padStart(2, '0');
-  const m = String(wib.getUTCMinutes()).padStart(2, '0');
-  return `${h}:${m}`;
+export function formatIndonesianTime(date: Date = new Date()): string {
+  const time = new Intl.DateTimeFormat('id-ID', {
+    timeZone: 'Asia/Jakarta',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  }).format(date);
+  return `${time.replace(/\./g, ':')} WIB`;
 }
 
-// Returns today's date string "YYYY-MM-DD" in WIB
-export function getTodayWIB(): string {
-  const wib = getNowWIB();
-  const y = wib.getUTCFullYear();
-  const mo = String(wib.getUTCMonth() + 1).padStart(2, '0');
-  const d = String(wib.getUTCDate()).padStart(2, '0');
-  return `${y}-${mo}-${d}`;
+export function parseWIBTargetTime(targetTime: string, referenceDate: Date = new Date()): Date {
+  const todayStr = getTodayWIBStr(referenceDate);
+  const isoStr = `${todayStr}T${targetTime}:00+07:00`;
+  return new Date(isoStr);
 }

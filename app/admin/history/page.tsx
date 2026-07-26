@@ -150,6 +150,45 @@ export default function AdminHistoryPage() {
     }
   };
 
+  const handleDeleteAllHistory = async () => {
+    const result = await Swal.fire({
+      title: 'Hapus Semua Riwayat?',
+      html: `
+        <div style="text-align:left; font-size: 13px; color: #94a3b8; line-height: 1.7">
+          Tindakan ini akan:<br/>
+          • Menghapus SELURUH data riwayat presensi secara permanen.<br/><br/>
+          <span style="color: #f87171">Tindakan ini tidak dapat dibatalkan.</span>
+        </div>
+      `,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#e11d48',
+      cancelButtonColor: '#334155',
+      confirmButtonText: 'Ya, Hapus Semua',
+      cancelButtonText: 'Batal',
+      background: '#0f172a',
+      color: '#f1f5f9',
+    });
+
+    if (!result.isConfirmed) return;
+
+    setLoading(true);
+    try {
+      const res = await fetch('/api/history', { method: 'DELETE' });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.message || 'Gagal menghapus riwayat.');
+        setLoading(false);
+        return;
+      }
+      toast.success('Semua riwayat berhasil dihapus!');
+      fetchHistory();
+    } catch {
+      toast.error('Terjadi kesalahan koneksi.');
+      setLoading(false);
+    }
+  };
+
   const totalHadir = history.filter(i => i.status === 'Hadir').length;
   const totalTidakHadir = history.filter(i => i.status === 'Tidak Hadir').length;
 
@@ -199,18 +238,27 @@ export default function AdminHistoryPage() {
             </div>
           </div>
 
-          {/* Manual Reset Button */}
-          <button
-            onClick={handleManualReset}
-            disabled={resetting}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 font-bold text-xs border border-rose-600/30 hover:border-rose-500/50 transition disabled:opacity-50"
-          >
-            {resetting
-              ? <div className="w-3.5 h-3.5 border-2 border-rose-300/30 border-t-rose-300 rounded-full animate-spin" />
-              : <RefreshCw className="w-3.5 h-3.5" />
-            }
-            Reset Manual
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleDeleteAllHistory}
+              disabled={resetting || loading}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800/80 hover:bg-rose-900/40 text-slate-300 hover:text-rose-400 font-bold text-xs border border-slate-700/60 hover:border-rose-500/50 transition disabled:opacity-50"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              Hapus Semua
+            </button>
+            <button
+              onClick={handleManualReset}
+              disabled={resetting || loading}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 font-bold text-xs border border-rose-600/30 hover:border-rose-500/50 transition disabled:opacity-50"
+            >
+              {resetting
+                ? <div className="w-3.5 h-3.5 border-2 border-rose-300/30 border-t-rose-300 rounded-full animate-spin" />
+                : <RefreshCw className="w-3.5 h-3.5" />
+              }
+              Reset Manual
+            </button>
+          </div>
         </div>
 
         {/* Info banner */}
