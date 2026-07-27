@@ -21,17 +21,17 @@ export function RealtimeClock({ variant = 'detailed' }: RealtimeClockProps) {
 
   if (!now) {
     return (
-      <div className="animate-pulse bg-slate-200 dark:bg-slate-800 h-8 w-48 rounded-lg"></div>
+      <div className="animate-pulse bg-[#0a0a0a] border border-cyan-900/50 h-8 w-48 rounded-md"></div>
     );
   }
 
   if (variant === 'compact') {
     return (
-      <div className="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800/80 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700">
-        <Clock className="w-4 h-4 text-blue-500 animate-spin-slow" />
-        <span>{formatIndonesianDate(now)}</span>
-        <span className="text-slate-300 dark:text-slate-600">•</span>
-        <span className="font-semibold text-blue-600 dark:text-blue-400">
+      <div className="flex items-center gap-2 text-xs font-digital font-bold text-slate-300 bg-[#0a0a0a]/80 px-3 py-1.5 rounded-md border border-cyan-900/40 shadow-[0_0_10px_rgba(0,240,255,0.05)]">
+        <Clock className="w-3.5 h-3.5 text-cyan-500 animate-pulse" />
+        <span className="tracking-widest">{formatIndonesianDate(now)}</span>
+        <span className="text-cyan-900 mx-1">|</span>
+        <span className="text-cyan-400 tracking-wider text-glow">
           {formatIndonesianTime(now)}
         </span>
       </div>
@@ -39,14 +39,18 @@ export function RealtimeClock({ variant = 'detailed' }: RealtimeClockProps) {
   }
 
   return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 bg-gradient-to-r from-blue-900/10 via-indigo-900/10 to-slate-900/10 dark:from-blue-950/40 dark:to-indigo-950/40 p-4 rounded-2xl border border-blue-200/50 dark:border-blue-800/50 backdrop-blur-md">
-      <div className="flex items-center gap-2 text-slate-700 dark:text-slate-200 font-medium">
-        <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-        <span className="text-base font-semibold">{formatIndonesianDate(now)}</span>
+    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-[#0a0a0a]/90 p-4 rounded-xl border border-cyan-900/50 shadow-[0_0_20px_rgba(0,240,255,0.1)] relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-1 bg-cyan-500 h-full shadow-[0_0_10px_rgba(0,240,255,0.8)]"></div>
+      
+      <div className="flex items-center gap-2 text-slate-300 font-digital pl-2">
+        <Calendar className="w-4 h-4 text-cyan-500" />
+        <span className="text-sm font-bold tracking-widest">{formatIndonesianDate(now)}</span>
       </div>
-      <div className="hidden sm:block text-slate-300 dark:text-slate-600">|</div>
-      <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-bold text-lg tracking-wider font-mono">
-        <Clock className="w-5 h-5 text-blue-500 animate-pulse" />
+      
+      <div className="hidden sm:block text-cyan-900/50 text-xl font-light">/</div>
+      
+      <div className="flex items-center gap-2 text-cyan-400 font-bold text-xl tracking-widest font-digital text-glow">
+        <Clock className="w-5 h-5 text-cyan-500 animate-pulse drop-shadow-[0_0_5px_rgba(0,240,255,0.8)]" />
         <span>{formatIndonesianTime(now)}</span>
       </div>
     </div>

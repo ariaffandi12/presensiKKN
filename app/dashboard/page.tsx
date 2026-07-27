@@ -108,16 +108,16 @@ export default function UserDashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#020617] text-white flex items-center justify-center">
+      <div className="min-h-screen bg-transparent text-white flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="relative w-16 h-16">
-            <div className="absolute inset-0 rounded-full border-4 border-blue-500/20"></div>
-            <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-blue-500 animate-spin"></div>
-            <div className="absolute inset-2 rounded-full border-4 border-transparent border-t-indigo-400 animate-spin" style={{ animationDirection: 'reverse', animationDuration: '0.7s' }}></div>
+            <div className="absolute inset-0 rounded-full border-4 border-cyan-900/40"></div>
+            <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-cyan-500 animate-spin"></div>
+            <div className="absolute inset-2 rounded-full border-4 border-transparent border-t-pink-500 animate-spin" style={{ animationDirection: 'reverse', animationDuration: '0.7s' }}></div>
           </div>
-          <div className="text-center">
-            <p className="text-sm font-bold text-white">Memuat Dashboard</p>
-            <p className="text-xs text-slate-500 mt-0.5">PresensiKu Realtime</p>
+          <div className="text-center font-digital">
+            <p className="text-sm font-bold text-cyan-400 text-glow">INITIALIZING DASHBOARD</p>
+            <p className="text-xs text-slate-500 mt-0.5 tracking-widest">SYS.06</p>
           </div>
         </div>
       </div>
@@ -125,12 +125,11 @@ export default function UserDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#020617] text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-transparent text-slate-100 flex flex-col">
       {/* Ambient backgrounds */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-32 -right-32 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 -left-32 w-80 h-80 bg-indigo-600/8 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-600/6 rounded-full blur-3xl"></div>
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="absolute -top-32 -right-32 w-96 h-96 bg-cyan-600/10 rounded-full blur-[100px]"></div>
+        <div className="absolute top-1/2 -left-32 w-80 h-80 bg-pink-600/10 rounded-full blur-[100px]"></div>
       </div>
 
       <Navbar user={user} />
@@ -138,32 +137,29 @@ export default function UserDashboardPage() {
       <main className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-6 space-y-5 relative z-10">
 
         {/* ── WELCOME BANNER ── */}
-        <div className="relative overflow-hidden rounded-2xl border border-slate-800/60 bg-gradient-to-br from-slate-900/90 via-slate-900/80 to-blue-950/40 p-5 sm:p-7 shadow-2xl">
-          <div className="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-blue-500 to-transparent"></div>
-          <div className="absolute -right-16 -top-16 w-56 h-56 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
+        <div className="glass-card p-5 sm:p-7 relative overflow-hidden">
+          <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent"></div>
+          
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 relative z-10">
             <div className="flex items-center gap-4">
               <div className="relative shrink-0">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-500 p-0.5 shadow-lg shadow-blue-500/30">
-                  <div className="w-full h-full bg-slate-900 rounded-[14px] flex items-center justify-center text-white font-black text-xl">
-                    {user?.username?.charAt(0).toUpperCase() || 'U'}
-                  </div>
+                <div className="w-14 h-14 rounded-xl border border-cyan-500/50 shadow-[0_0_15px_rgba(0,240,255,0.3)] bg-[#050505] flex items-center justify-center text-cyan-400 font-digital font-black text-2xl text-glow">
+                  {user?.username?.charAt(0).toUpperCase() || 'U'}
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-[#020617]"></div>
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-cyan-400 border-2 border-[#050505] shadow-[0_0_10px_rgba(0,240,255,0.8)]"></div>
               </div>
 
-              <div>
+              <div className="font-digital">
                 <div className="flex items-center gap-2 mb-0.5">
-                  <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-                  <span className="text-xs font-bold text-blue-400 uppercase tracking-widest">
+                  <Sparkles className="w-3.5 h-3.5 text-cyan-500" />
+                  <span className="text-xs font-bold text-cyan-500 uppercase tracking-widest">
                     Dashboard Pengguna
                   </span>
                 </div>
-                <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                  Halo, <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">{user?.username}</span>!
+                <h1 className="text-xl sm:text-2xl font-black text-white tracking-widest uppercase">
+                  WELCOME, <span className="text-cyan-400 text-glow">{user?.username}</span>
                 </h1>
-                <p className="text-xs text-slate-500 mt-0.5">Kelompok 6 • PresensiKu Realtime</p>
+                <p className="text-[10px] text-slate-500 mt-1 tracking-widest uppercase">SYS.06 • ONLINE</p>
               </div>
             </div>
 
@@ -177,98 +173,97 @@ export default function UserDashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 
           {/* Card: Judul Presensi Aktif & Status */}
-          <div className="rounded-2xl border border-slate-800/60 bg-slate-900/60 backdrop-blur-xl p-5 space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-blue-400" />
-                Status Presensi Hari Ini
+          <div className="glass-card p-5 space-y-4">
+            <div className="flex items-center justify-between font-digital">
+              <span className="text-[10px] font-bold text-cyan-500 uppercase tracking-widest flex items-center gap-2">
+                <Calendar className="w-3.5 h-3.5" />
+                Status Hari Ini
               </span>
-              <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/30 flex items-center gap-1">
-                <Wifi className="w-2.5 h-2.5" /> REALTIME
+              <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-sm bg-cyan-900/30 text-cyan-400 border border-cyan-500/30 flex items-center gap-1 shadow-[0_0_10px_rgba(0,240,255,0.2)]">
+                <Wifi className="w-2.5 h-2.5 animate-pulse" /> LIVE
               </span>
             </div>
 
-            {/* List Active Titles & User Status per active title */}
             <div className="space-y-2.5">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+              <span className="text-[10px] font-digital font-bold text-slate-500 uppercase tracking-widest block border-b border-slate-800 pb-2">
                 Judul Presensi Aktif ({activeTitles.length})
               </span>
 
               {activeTitles.length > 0 ? (
-                <div className="space-y-2">
+                <div className="space-y-3 pt-1">
                   {(() => {
                     const now = new Date();
                     const currentHHMM = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
                     return activeTitles.map((t) => {
                       const record = userAttendances.find((a) => a.titleId === t.id);
                       const isHadir = record && record.status === 'Hadir';
-                    // @ts-ignore - t has closingTime from API
-                    const isTimePassed = t.closingTime && currentHHMM >= t.closingTime;
-                    const isDeadlinePassed = deadline ? new Date() > new Date(deadline) : false;
-                    const isTidakHadir = !record && (isTimePassed || isDeadlinePassed);
+                      // @ts-ignore
+                      const isTimePassed = t.closingTime && currentHHMM >= t.closingTime;
+                      const isDeadlinePassed = deadline ? new Date() > new Date(deadline) : false;
+                      const isTidakHadir = !record && (isTimePassed || isDeadlinePassed);
 
-                    return (
-                      <div
-                        key={t.id}
-                        className={`p-3 rounded-xl flex items-center justify-between border transition-all ${
-                          isHadir
-                            ? 'bg-emerald-950/30 border-emerald-800/40'
-                            : isTidakHadir
-                            ? 'bg-rose-950/30 border-rose-800/40'
-                            : 'bg-slate-950/60 border-slate-800/40'
-                        }`}
-                      >
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <div className={`p-1.5 rounded-lg shrink-0 ${
+                      return (
+                        <div
+                          key={t.id}
+                          className={`p-3 rounded-lg flex items-center justify-between border transition-all ${
                             isHadir
-                              ? 'bg-emerald-500/20 text-emerald-400'
+                              ? 'bg-cyan-950/20 border-cyan-500/40 shadow-[0_0_10px_rgba(0,240,255,0.1)]'
                               : isTidakHadir
-                              ? 'bg-rose-500/20 text-rose-400'
-                              : 'bg-amber-500/15 text-amber-400'
-                          }`}>
-                            {isHadir ? (
-                              <CheckCircle2 className="w-4 h-4" />
-                            ) : isTidakHadir ? (
-                              <XCircle className="w-4 h-4" />
-                            ) : (
-                              <Clock className="w-4 h-4" />
-                            )}
+                              ? 'bg-pink-950/20 border-pink-500/40 shadow-[0_0_10px_rgba(255,0,106,0.1)]'
+                              : 'bg-[#050505] border-cyan-900/40'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3 min-w-0">
+                            <div className={`p-1.5 rounded-md shrink-0 border ${
+                              isHadir
+                                ? 'bg-cyan-900/30 text-cyan-400 border-cyan-500/50'
+                                : isTidakHadir
+                                ? 'bg-pink-900/30 text-pink-400 border-pink-500/50'
+                                : 'bg-[#0a0a0a] text-slate-500 border-slate-700'
+                            }`}>
+                              {isHadir ? (
+                                <CheckCircle2 className="w-4 h-4 drop-shadow-[0_0_3px_rgba(0,240,255,0.8)]" />
+                              ) : isTidakHadir ? (
+                                <XCircle className="w-4 h-4 drop-shadow-[0_0_3px_rgba(255,0,106,0.8)]" />
+                              ) : (
+                                <Clock className="w-4 h-4" />
+                              )}
+                            </div>
+                            <span className="text-[11px] font-digital font-bold text-white truncate tracking-wider">{t.title}</span>
                           </div>
-                          <span className="text-xs font-bold text-white truncate">{t.title}</span>
-                        </div>
 
-                        {isHadir ? (
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shrink-0">
-                            Hadir ({record.time})
-                          </span>
-                        ) : isTidakHadir ? (
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40 shrink-0">
-                            Tidak Hadir
-                          </span>
-                        ) : (
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30 shrink-0">
-                            Belum Hadir
-                          </span>
-                        )}
-                      </div>
-                    );
+                          {isHadir ? (
+                            <span className="text-[9px] font-digital font-bold px-2 py-0.5 rounded-sm bg-cyan-900/30 text-cyan-400 border border-cyan-500/50 shrink-0">
+                              HADIR ({record.time})
+                            </span>
+                          ) : isTidakHadir ? (
+                            <span className="text-[9px] font-digital font-bold px-2 py-0.5 rounded-sm bg-pink-900/30 text-pink-400 border border-pink-500/50 shrink-0">
+                              TIDAK HADIR
+                            </span>
+                          ) : (
+                            <span className="text-[9px] font-digital font-bold px-2 py-0.5 rounded-sm bg-[#050505] text-slate-400 border border-slate-700 shrink-0">
+                              BELUM HADIR
+                            </span>
+                          )}
+                        </div>
+                      );
                     });
                   })()}
                 </div>
               ) : (
-                <div className="p-4 rounded-xl bg-slate-950/50 border border-slate-800/40 text-center text-slate-500 text-xs font-medium">
-                  Belum ada Judul Presensi yang aktif.
+                <div className="p-4 rounded-lg bg-[#050505] border border-cyan-900/30 text-center text-slate-500 text-[10px] font-digital font-bold tracking-widest">
+                  TIDAK ADA DATA AKTIF
                 </div>
               )}
             </div>
           </div>
 
           {/* Card: Sesi Admin & Actions */}
-          <div className="rounded-2xl border border-slate-800/60 bg-slate-900/60 backdrop-blur-xl p-5 space-y-4 flex flex-col justify-between">
+          <div className="glass-card p-5 space-y-4 flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                  Sesi Presensi Admin
+              <div className="flex items-center justify-between mb-4 font-digital">
+                <span className="text-[10px] font-bold text-cyan-500 uppercase tracking-widest">
+                  Status Sesi
                 </span>
                 <div className="flex items-center gap-2">
                   {isAttendanceOpen && deadline && (
@@ -282,13 +277,13 @@ export default function UserDashboardPage() {
                     />
                   )}
                   {isAttendanceOpen ? (
-                    <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span className="text-[10px] font-bold px-3 py-1 rounded-sm bg-cyan-900/30 text-cyan-400 border border-cyan-500/50 flex items-center gap-1.5 shadow-[0_0_10px_rgba(0,240,255,0.2)]">
+                      <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_5px_rgba(0,240,255,0.8)]"></span>
                       DIBUKA
                     </span>
                   ) : (
-                    <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-slate-800 text-slate-500 border border-slate-700 flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+                    <span className="text-[10px] font-bold px-3 py-1 rounded-sm bg-pink-900/30 text-pink-400 border border-pink-500/50 flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-pink-500"></span>
                       DITUTUP
                     </span>
                   )}
@@ -297,31 +292,31 @@ export default function UserDashboardPage() {
 
               {/* Status message */}
               {isAttendanceOpen ? (
-                <div className="p-4 rounded-xl bg-emerald-950/30 border border-emerald-800/30 text-xs leading-relaxed">
-                  <div className="flex items-start gap-2.5 text-emerald-200/80">
-                    <Sparkles className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-bold text-emerald-300">Presensi sedang dibuka!</p>
-                      <p className="mt-0.5">
-                        Terdapat {activeTitles.length} judul presensi aktif. Silakan isi presensi untuk judul yang tersedia.
+                <div className="p-4 rounded-lg bg-cyan-950/20 border border-cyan-500/40 text-[11px] leading-relaxed shadow-[0_0_10px_rgba(0,240,255,0.1)]">
+                  <div className="flex items-start gap-3 text-cyan-100/80">
+                    <Sparkles className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5 drop-shadow-[0_0_3px_rgba(0,240,255,0.8)]" />
+                    <div className="font-digital">
+                      <p className="font-bold text-cyan-400 tracking-wider">SESI AKTIF</p>
+                      <p className="mt-1 text-slate-300">
+                        Sistem mendeteksi {activeTitles.length} modul aktif. Silakan lakukan inisialisasi presensi.
                       </p>
                     </div>
                   </div>
                 </div>
               ) : isExpired && attendanceStatus === 'OPEN' ? (
-                <div className="p-4 rounded-xl bg-rose-950/30 border border-rose-800/30 flex items-start gap-2.5 text-xs">
-                  <Timer className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-bold text-rose-300">Waktu Presensi Telah Habis</p>
-                    <p className="text-rose-200/70 mt-0.5">Batas waktu absensi telah terlewat.</p>
+                <div className="p-4 rounded-lg bg-pink-950/20 border border-pink-500/40 flex items-start gap-3 text-[11px]">
+                  <Timer className="w-4 h-4 text-pink-400 shrink-0 mt-0.5 drop-shadow-[0_0_3px_rgba(255,0,106,0.8)]" />
+                  <div className="font-digital">
+                    <p className="font-bold text-pink-400 tracking-wider">TIMEOUT</p>
+                    <p className="text-slate-300 mt-1">Batas waktu sesi ini telah berakhir.</p>
                   </div>
                 </div>
               ) : (
-                <div className="p-4 rounded-xl bg-slate-800/30 border border-slate-700/30 flex items-start gap-2.5 text-xs">
+                <div className="p-4 rounded-lg bg-[#050505] border border-slate-800 flex items-start gap-3 text-[11px]">
                   <Lock className="w-4 h-4 text-slate-500 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-semibold text-slate-400">Presensi belum dibuka.</p>
-                    <p className="text-slate-600 mt-0.5">Halaman ini akan diperbarui otomatis saat admin membuka sesi.</p>
+                  <div className="font-digital">
+                    <p className="font-bold text-slate-400 tracking-wider">TERKUNCI</p>
+                    <p className="text-slate-500 mt-1">Sistem menunggu otorisasi admin untuk membuka sesi.</p>
                   </div>
                 </div>
               )}
@@ -331,20 +326,19 @@ export default function UserDashboardPage() {
             {isAttendanceOpen && activeTitles.length > 0 ? (
               <Link
                 href="/attendance"
-                className="w-full py-3.5 px-4 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 hover:from-blue-500 hover:via-indigo-500 hover:to-blue-400 shadow-lg shadow-blue-500/25 transition-all hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2 relative overflow-hidden group"
+                className="neon-button w-full py-3 mt-4 text-[11px] font-digital tracking-widest"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 blur-lg opacity-30 group-hover:opacity-50 transition-opacity"></div>
-                <Camera className="w-4 h-4 relative z-10" />
-                <span className="relative z-10">Isi & Kirim Presensi</span>
-                <ArrowRight className="w-4 h-4 relative z-10" />
+                <Camera className="w-4 h-4 mr-2" />
+                INITIALIZE PRESENSI
+                <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             ) : (
               <button
                 disabled
-                className="w-full py-3.5 px-4 rounded-xl font-bold text-sm text-slate-600 bg-slate-800/30 border border-slate-700/30 cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full py-3 mt-4 rounded-lg font-digital font-bold text-[11px] tracking-widest text-slate-600 bg-[#050505] border border-slate-800 cursor-not-allowed flex items-center justify-center gap-2"
               >
-                <Lock className="w-4 h-4" />
-                {isAttendanceOpen ? 'Belum Ada Judul Aktif' : 'Presensi Belum Dibuka'}
+                <Lock className="w-3.5 h-3.5" />
+                {isAttendanceOpen ? 'NO ACTIVE MODULE' : 'SYSTEM LOCKED'}
               </button>
             )}
           </div>
@@ -352,33 +346,33 @@ export default function UserDashboardPage() {
         </div>
 
         {/* ── RIWAYAT LINK ── */}
-        <div className="rounded-2xl border border-slate-800/60 bg-slate-900/60 backdrop-blur-xl p-4 flex items-center justify-between">
+        <div className="glass-card p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-indigo-500/15 border border-indigo-500/20">
-              <History className="w-4 h-4 text-indigo-400" />
+            <div className="p-2 rounded-lg bg-cyan-900/20 border border-cyan-500/30">
+              <History className="w-4 h-4 text-cyan-400" />
             </div>
-            <div>
-              <p className="text-sm font-bold text-white">Riwayat Presensi</p>
-              <p className="text-xs text-slate-500">Lihat catatan presensi masa lalu Anda</p>
+            <div className="font-digital">
+              <p className="text-xs font-bold text-white tracking-widest">LOG DATA</p>
+              <p className="text-[10px] text-slate-500 mt-0.5">Akses catatan riwayat sistem</p>
             </div>
           </div>
           <Link
             href="/history"
-            className="px-4 py-2 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 font-bold text-xs border border-indigo-600/30 hover:border-indigo-500/50 transition flex items-center gap-1.5"
+            className="px-4 py-2 rounded-md bg-[#050505] hover:bg-cyan-900/20 text-cyan-400 font-digital font-bold text-[10px] tracking-widest border border-cyan-900/50 hover:border-cyan-400 transition flex items-center gap-2"
           >
-            Lihat Riwayat
-            <ArrowRight className="w-3.5 h-3.5" />
+            LIHAT LOG
+            <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
 
         {/* ── SUBMITTED ATTENDANCES HISTORY ── */}
         {userAttendances.filter((att) => att.status === 'Hadir' && att.photo).length > 0 && (
-          <div className="rounded-2xl border border-slate-800/60 bg-slate-900/60 backdrop-blur-xl p-5 shadow-xl space-y-4">
-            <h3 className="text-sm font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-blue-500/20">
-                <FileText className="w-3.5 h-3.5 text-blue-400" />
+          <div className="glass-card p-5 space-y-4">
+            <h3 className="text-[11px] font-digital font-bold text-cyan-400 uppercase tracking-widest flex items-center gap-2 border-b border-cyan-900/30 pb-3">
+              <div className="p-1.5 rounded-md bg-cyan-900/30 border border-cyan-500/30">
+                <FileText className="w-3.5 h-3.5 text-cyan-400" />
               </div>
-              Riwayat Presensi Terkirim Anda
+              Transmisi Data Berhasil
             </h3>
 
             <div className="space-y-4">
@@ -387,26 +381,31 @@ export default function UserDashboardPage() {
                 .map((att) => (
                   <div
                     key={att.id}
-                    className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-xl bg-slate-950/60 border border-slate-800/40"
+                    className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-lg bg-[#050505] border border-cyan-900/40 relative overflow-hidden"
                   >
+                    <div className="absolute top-0 left-0 w-1 bg-cyan-500 h-full shadow-[0_0_10px_rgba(0,240,255,0.8)]"></div>
+                    
                     {att.photo && (
-                      <div className="shrink-0 w-full sm:w-36 h-28 overflow-hidden rounded-xl border border-slate-800">
+                      <div className="shrink-0 w-full sm:w-36 h-28 overflow-hidden rounded-md border border-cyan-900/50 relative group">
+                        <div className="absolute inset-0 bg-cyan-500/10 group-hover:bg-transparent transition-colors z-10"></div>
                         <img
                           src={att.photo}
                           alt="Bukti Presensi"
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-500"
                         />
+                        {/* Scanline effect over image */}
+                        <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,240,255,0.1)_50%)] bg-[length:100%_4px] z-20 pointer-events-none mix-blend-overlay opacity-50"></div>
                       </div>
                     )}
-                    <div className="space-y-1.5 text-xs flex-1">
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm font-bold text-white">{att.title?.title}</p>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-mono">
+                    <div className="space-y-2 text-xs flex-1 font-digital w-full">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <p className="text-xs font-bold text-white tracking-widest">{att.title?.title}</p>
+                        <span className="text-[9px] font-bold px-2 py-0.5 rounded-sm bg-cyan-900/30 text-cyan-400 border border-cyan-500/50 shadow-[0_0_5px_rgba(0,240,255,0.2)] whitespace-nowrap">
                           {att.date} • {att.time}
                         </span>
                       </div>
-                      <p className="text-slate-300 bg-slate-900/60 p-2.5 rounded-xl border border-slate-800/40 mt-1 leading-relaxed">
-                        "{att.description}"
+                      <p className="text-slate-300 bg-[#0a0a0a] p-3 rounded-md border border-cyan-900/30 mt-2 text-[10px] tracking-wider leading-relaxed">
+                        &gt; "{att.description}"
                       </p>
                     </div>
                   </div>

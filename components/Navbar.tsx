@@ -25,11 +25,11 @@ export function Navbar({ user }: NavbarProps) {
       text: 'Apakah Anda yakin ingin keluar dari PresensiKu?',
       icon: 'question',
       showCancelButton: true,
-      confirmButtonColor: '#2563eb',
+      confirmButtonColor: '#00f0ff',
       cancelButtonColor: '#334155',
       confirmButtonText: 'Ya, Keluar',
       cancelButtonText: 'Batal',
-      background: '#0f172a',
+      background: '#0a0a0a',
       color: '#f1f5f9',
     });
 
@@ -49,33 +49,28 @@ export function Navbar({ user }: NavbarProps) {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 w-full border-b border-cyan-900/40 bg-[#050505]/90 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
       {/* Top accent line */}
-      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent"></div>
+      <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-500/80 to-transparent"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-14 gap-4">
+        <div className="flex items-center justify-between h-16 gap-4">
 
           {/* Logo & Brand */}
           <Link
             href={user?.role === 'ADMIN' ? '/admin/dashboard' : '/dashboard'}
             className="flex items-center gap-3 group"
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 p-0.5 shadow-lg shadow-blue-500/25 group-hover:scale-105 transition-transform">
-              <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-blue-400" />
-              </div>
+            <div className="w-10 h-10 rounded-lg border border-cyan-500/50 bg-[#0a0a0a] p-0 shadow-[0_0_15px_rgba(0,240,255,0.2)] group-hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] group-hover:scale-105 transition-all flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-cyan-400 drop-shadow-[0_0_5px_rgba(0,240,255,0.8)]" />
             </div>
-            <div className="hidden sm:block">
+            <div className="hidden sm:block font-digital">
               <div className="flex items-center gap-2">
-                <span className="font-black text-base text-white tracking-tight">
-                  Presensi<span className="text-blue-400">Ku</span>
-                </span>
-                <span className="text-[9px] uppercase font-bold tracking-widest px-1.5 py-0.5 bg-blue-500/15 text-blue-400 rounded-full border border-blue-500/30">
-                  Realtime
+                <span className="font-extrabold text-base text-white tracking-widest">
+                  PRESENSI <span className="text-cyan-400 text-glow">DIGITAL</span>
                 </span>
               </div>
-              <p className="text-[10px] font-medium text-slate-600 leading-none mt-0.5">Kelompok 6</p>
+              <p className="text-[10px] font-bold text-slate-500 tracking-widest leading-none mt-1">SYS.06</p>
             </div>
           </Link>
 
@@ -88,33 +83,35 @@ export function Navbar({ user }: NavbarProps) {
           {user && (
             <Link
               href={user.role === 'ADMIN' ? '/admin/history' : '/history'}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/60 hover:bg-slate-800/80 text-slate-400 hover:text-white text-xs font-bold border border-slate-800/60 hover:border-slate-700 transition-all"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#0a0a0a] hover:bg-cyan-950/30 text-slate-400 hover:text-cyan-400 text-xs font-digital font-bold border border-cyan-900/30 hover:border-cyan-500/50 hover:shadow-[0_0_10px_rgba(0,240,255,0.15)] transition-all"
             >
               <History className="w-3.5 h-3.5" />
-              Riwayat
+              LOG DATA
             </Link>
           )}
 
           {/* User Area */}
           {user ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               {/* User pill */}
-              <div className="flex items-center gap-2 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800/60">
-                <div className={`w-6 h-6 rounded-lg flex items-center justify-center text-white shrink-0 ${
+              <div className={`flex items-center gap-3 px-3 py-1.5 rounded-md border bg-[#0a0a0a] ${
+                user.role === 'ADMIN' ? 'border-pink-900/40' : 'border-cyan-900/40'
+              }`}>
+                <div className={`w-7 h-7 rounded-md flex items-center justify-center shrink-0 border ${
                   user.role === 'ADMIN'
-                    ? 'bg-gradient-to-br from-indigo-600 to-purple-600'
-                    : 'bg-gradient-to-br from-blue-600 to-indigo-600'
+                    ? 'border-pink-500/50 text-pink-400 shadow-[0_0_10px_rgba(255,0,106,0.2)] bg-pink-950/30'
+                    : 'border-cyan-500/50 text-cyan-400 shadow-[0_0_10px_rgba(0,240,255,0.2)] bg-cyan-950/30'
                 }`}>
                   {user.role === 'ADMIN' ? (
-                    <Shield className="w-3.5 h-3.5" />
+                    <Shield className="w-4 h-4 drop-shadow-[0_0_3px_rgba(255,0,106,0.8)]" />
                   ) : (
-                    <UserIcon className="w-3.5 h-3.5" />
+                    <UserIcon className="w-4 h-4 drop-shadow-[0_0_3px_rgba(0,240,255,0.8)]" />
                   )}
                 </div>
-                <div className="hidden sm:block">
-                  <p className="text-xs font-bold text-white leading-none">{user.username}</p>
-                  <p className={`text-[9px] font-bold uppercase tracking-widest leading-none mt-0.5 ${
-                    user.role === 'ADMIN' ? 'text-indigo-400' : 'text-blue-400'
+                <div className="hidden sm:block font-digital">
+                  <p className="text-xs font-bold text-white tracking-wider leading-none">{user.username}</p>
+                  <p className={`text-[9px] font-bold uppercase tracking-widest leading-none mt-1 ${
+                    user.role === 'ADMIN' ? 'text-pink-400 text-glow-pink' : 'text-cyan-400 text-glow'
                   }`}>
                     {user.role}
                   </p>
@@ -126,12 +123,12 @@ export function Navbar({ user }: NavbarProps) {
                 onClick={handleLogout}
                 disabled={isLoggingOut}
                 title="Keluar"
-                className="p-2 rounded-xl bg-slate-900/80 hover:bg-rose-950/50 text-slate-500 hover:text-rose-400 border border-slate-800/60 hover:border-rose-800/60 transition-all active:scale-95"
+                className="p-2 rounded-md bg-[#0a0a0a] hover:bg-pink-950/30 text-slate-500 hover:text-pink-400 border border-slate-800 hover:border-pink-500/50 hover:shadow-[0_0_10px_rgba(255,0,106,0.2)] transition-all active:scale-95"
               >
                 {isLoggingOut ? (
-                  <div className="w-4 h-4 border-2 border-slate-500/30 border-t-slate-400 rounded-full animate-spin" />
+                  <div className="w-5 h-5 border-2 border-slate-500/30 border-t-pink-400 rounded-full animate-spin" />
                 ) : (
-                  <LogOut className="w-4 h-4" />
+                  <LogOut className="w-5 h-5" />
                 )}
               </button>
             </div>

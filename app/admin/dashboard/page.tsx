@@ -369,10 +369,9 @@ export default function AdminDashboardPage() {
   return (
     <div className="min-h-screen bg-[#020617] text-slate-100 flex flex-col">
       {/* Ambient background glows */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl"></div>
-        <div className="absolute -top-20 right-0 w-80 h-80 bg-purple-600/8 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-blue-600/8 rounded-full blur-3xl"></div>
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-pink-600/10 rounded-full blur-[100px]"></div>
+        <div className="absolute top-1/2 right-0 w-80 h-80 bg-cyan-600/10 rounded-full blur-[100px]"></div>
       </div>
 
       <Navbar user={adminUser} />
@@ -380,9 +379,9 @@ export default function AdminDashboardPage() {
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6 relative z-10">
 
         {/* ── HEADER PANEL ── */}
-        <div className="relative overflow-hidden rounded-2xl border border-slate-800/80 bg-gradient-to-br from-slate-900 via-slate-900/95 to-indigo-950/40 p-6 shadow-2xl">
+        <div className="glass-card p-6">
           {/* Decorative top bar */}
-          <div className="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-indigo-500 to-transparent"></div>
+          <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-transparent via-pink-500 to-transparent shadow-[0_0_10px_rgba(255,0,106,0.5)]"></div>
 
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
             {/* Left: Title */}
@@ -395,9 +394,9 @@ export default function AdminDashboardPage() {
                   Admin Control Panel
                 </span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-black text-white tracking-widest uppercase font-digital">
                 Dashboard Monitoring{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
+                <span className="text-pink-400 text-glow-pink">
                   Realtime
                 </span>
               </h1>
@@ -509,15 +508,15 @@ export default function AdminDashboardPage() {
             return (
               <div
                 key={idx}
-                className={`relative overflow-hidden p-4 rounded-2xl border border-slate-800/60 bg-slate-900/60 backdrop-blur-xl hover:-translate-y-1 transition-all duration-200 shadow-xl ${card.glow} cursor-default group`}
+                className={`relative overflow-hidden p-4 rounded-xl border border-cyan-900/40 bg-[#050505]/80 backdrop-blur-xl hover:-translate-y-1 transition-all duration-200 shadow-[0_0_15px_rgba(0,240,255,0.05)] cursor-default group`}
               >
                 <div className={`absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-br ${card.gradient} opacity-10 rounded-full blur-xl group-hover:opacity-20 transition-opacity`}></div>
                 <div className="relative">
                   <div className={`inline-flex p-2 rounded-lg bg-gradient-to-br ${card.gradient} bg-opacity-20 mb-3`}>
                     <IconComponent className="w-4 h-4 text-white" />
                   </div>
-                  <div className="text-2xl font-black text-white tabular-nums">{card.value}</div>
-                  <p className="text-[11px] text-slate-400 font-medium mt-0.5 leading-tight">{card.label}</p>
+                  <div className="text-2xl font-black text-cyan-400 text-glow tabular-nums font-digital">{card.value}</div>
+                  <p className="text-[10px] text-slate-500 font-bold mt-1 tracking-widest uppercase font-digital">{card.label}</p>
                 </div>
               </div>
             );
@@ -525,7 +524,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* ── MONITORING KEHADIRAN REALTIME (17 USER LIST & DATE GROUPS) ── */}
-        <div className="rounded-2xl border border-slate-800/60 bg-slate-900/60 backdrop-blur-xl overflow-hidden shadow-xl">
+        <div className="glass-card overflow-hidden">
           {/* Header */}
           <div className="p-5 border-b border-slate-800/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
@@ -676,8 +675,8 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* ── MONITORING FOTO PRESENSI (HANYA YANG HADIR) ── */}
-        <div className="rounded-2xl border border-slate-800/60 bg-slate-900/60 backdrop-blur-xl p-5 shadow-xl">
-          <div className="flex items-center gap-3 mb-5 pb-4 border-b border-slate-800/60">
+        <div className="glass-card p-5">
+          <div className="flex items-center gap-3 mb-5 pb-4 border-b border-cyan-900/40">
             <div className="p-1.5 rounded-lg bg-sky-500/20">
               <ImageIcon className="w-4 h-4 text-sky-400" />
             </div>

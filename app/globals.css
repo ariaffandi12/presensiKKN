@@ -4,19 +4,63 @@
 
 @layer base {
   body {
-    @apply bg-[#020617] text-slate-100 antialiased min-h-screen;
+    /* Very dark digital background */
+    @apply bg-[#050505] text-slate-100 antialiased min-h-screen;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
 
-/* Glass card - dark themed */
-.glass-card {
-  @apply bg-slate-900/60 backdrop-blur-xl border border-slate-800/60 shadow-xl rounded-2xl;
+/* Digital Grid Background */
+.bg-grid {
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
 }
 
-/* Glass input - dark themed */
+/* Cyber Glass Card */
+.glass-card {
+  @apply bg-[#0a0a0a]/80 backdrop-blur-xl border border-cyan-900/40 shadow-[0_0_15px_rgba(0,240,255,0.05)] rounded-xl relative overflow-hidden;
+}
+.glass-card::before {
+  content: '';
+  @apply absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent;
+}
+
+/* Cyber Glass Input */
 .glass-input {
-  @apply bg-slate-800/70 border border-slate-700/60 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-xl transition text-slate-100 placeholder:text-slate-500 outline-none;
+  @apply bg-[#0a0a0a]/90 border border-slate-800/80 focus:border-cyan-500 focus:shadow-[0_0_10px_rgba(0,240,255,0.3)] focus:ring-1 focus:ring-cyan-500/50 rounded-lg transition-all text-slate-100 placeholder:text-slate-600 outline-none;
+}
+
+/* Cyber Neon Button */
+.neon-button {
+  @apply relative inline-flex items-center justify-center font-bold text-cyan-400 bg-transparent border border-cyan-500/50 rounded-lg overflow-hidden transition-all duration-300;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.1), inset 0 0 10px rgba(0, 240, 255, 0.05);
+}
+.neon-button:hover {
+  @apply text-slate-950 bg-cyan-400 border-cyan-400;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.6), inset 0 0 10px rgba(0, 240, 255, 0.4);
+}
+.neon-button-danger {
+  @apply relative inline-flex items-center justify-center font-bold text-pink-500 bg-transparent border border-pink-500/50 rounded-lg overflow-hidden transition-all duration-300;
+  box-shadow: 0 0 10px rgba(255, 0, 106, 0.1), inset 0 0 10px rgba(255, 0, 106, 0.05);
+}
+.neon-button-danger:hover {
+  @apply text-slate-950 bg-pink-500 border-pink-500;
+  box-shadow: 0 0 20px rgba(255, 0, 106, 0.6), inset 0 0 10px rgba(255, 0, 106, 0.4);
+}
+
+/* Glowing Text */
+.text-glow {
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.5), 0 0 20px rgba(0, 240, 255, 0.3);
+}
+.text-glow-pink {
+  text-shadow: 0 0 10px rgba(255, 0, 106, 0.5), 0 0 20px rgba(255, 0, 106, 0.3);
+}
+
+/* Monospace Digital Font */
+.font-digital {
+  font-family: 'Space Grotesk', monospace, sans-serif;
+  letter-spacing: 0.05em;
 }
 
 /* Custom scrollbar */
@@ -25,14 +69,14 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #050505;
 }
 ::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 99px;
+  background: #164e63;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #4b5563;
+  background: #0891b2;
 }
 
 /* Animations */
@@ -65,6 +109,6 @@
 
 /* Selection color */
 ::selection {
-  background-color: #3b82f6;
-  color: white;
+  background-color: #00f0ff;
+  color: #000;
 }
