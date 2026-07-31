@@ -1,4 +1,4 @@
-# Presensi Digital - Kelompok 6 (SYS.06) 🚀
+# Presensi Digital  (SYS.06) 🚀
 
 Sistem Presensi Digital Berbasis Web dengan fitur *Monitoring Realtime*, Manajemen Sesi, dan Validasi Foto (Selfie). Dibangun khusus untuk memenuhi kebutuhan administrasi presensi yang cepat, aman, dan mudah dimonitor. 
 
@@ -92,4 +92,4 @@ Aplikasi ini tidak menggunakan antarmuka standar. Desain telah dimodifikasi meny
 - Font *Monospace* (Space Grotesk) untuk angka dan data digital yang memberikan kesan *Cyberpunk*.
 
 ---
-**Dibuat dengan ❤️ oleh Kelompok 6 (SYS.06)**
+**Dibuat dengan ❤️ oleh Ridev(SYS.06)**
